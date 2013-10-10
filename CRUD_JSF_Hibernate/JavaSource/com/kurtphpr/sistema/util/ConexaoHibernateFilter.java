@@ -19,15 +19,31 @@ public class ConexaoHibernateFilter implements Filter {
 	
 	@Override
 	public void destroy() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void doFilter(ServletRequest servletFilter, ServletResponse servletResponse,
 			FilterChain chain) throws IOException, ServletException {
-		this.sf.getCurrentSession().beginTransaction();
-		chain.doFilter(servletFilter, servletResponse);
+		
+		try {
+			this.sf.getCurrentSession().beginTransaction();
+			chain.doFilter(servletFilter, servletResponse);
+			this.sf.getCurrentSession().getTransaction().commit();
+			this.sf.getCurrentSession().close();
+			
+		} catch (Throwable ex) {
+			try {
+				if(this.sf.getCurrentSession().getTransaction().isActive()){
+					this.sf.getCurrentSession().getTransaction().rollback();
+				}
+			} catch (Throwable t) {
+				t.printStackTrace();
+			}
+			
+			throw new ServletException();	
+		}
+		
 		
 	}
 

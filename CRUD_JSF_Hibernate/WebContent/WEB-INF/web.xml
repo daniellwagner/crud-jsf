@@ -7,6 +7,15 @@
     <welcome-file>index.html</welcome-file>
   </welcome-file-list>
 -->
+ <filter>
+  <filter-name>conexaoFilter</filter-name>
+  <filter-class>com.kurtphpr.sistema.util.ConexaoHibernateFilter</filter-class>
+ </filter>
+ <filter-mapping>
+  <filter-name>conexaoFilter</filter-name>
+  <url-pattern>*.jsf</url-pattern>
+ </filter-mapping>
+ 
  <servlet>
   <servlet-name>Faces Servlet</servlet-name>
   <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
